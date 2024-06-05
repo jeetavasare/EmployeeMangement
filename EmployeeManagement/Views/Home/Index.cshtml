@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Employee>
+
+@{
+    ViewBag.Title = "Employee List";
+}
+
+<div class="card-deck">
+    @foreach (var employee in Model)
+    {
+        <div class="card m-3">
+            <div class="card-header">
+                <h3>@employee.Name</h3>
+            </div>
+            <img class="card-img-top" src="~/images/file.png" asp-append-version="true" style="width: 200px; height: auto;" />
+            <div class="card-footer text-center">
+                
+                 <a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-primary m-1">Show</a>
+                 @* @Html.ActionLink("View","details", "home", new {id = employee.Id}) generated entire a tag with innertext=view*@ 
+                @* <a href="@Url.Action("details", "home", new {id = employee.Id})" class="btn btn-primary">View</a> generates only string as link so cna be used in side href attrubute*@
+                <a href="#" class="btn btn-primary m-1">Edit</a>
+                <a href="#" class="btn btn-danger m-1">Delete</a>
+            </div>
+        </div>
+    }
+</div>

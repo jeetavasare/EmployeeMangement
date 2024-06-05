@@ -1,0 +1,139 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Jeet\\C#\\EmployeeManagement\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|d:\\jeet\\c#\\employeemanagement\\employeemanagement\\models\\dept.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|solutionrelative:employeemanagement\\models\\dept.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|d:\\jeet\\c#\\employeemanagement\\employeemanagement\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|solutionrelative:employeemanagement\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|d:\\jeet\\c#\\employeemanagement\\employeemanagement\\models\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|solutionrelative:employeemanagement\\models\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|d:\\jeet\\c#\\employeemanagement\\employeemanagement\\views\\home\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|solutionrelative:employeemanagement\\views\\home\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|d:\\jeet\\c#\\employeemanagement\\employeemanagement\\models\\mockemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|solutionrelative:employeemanagement\\models\\mockemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|d:\\jeet\\c#\\employeemanagement\\employeemanagement\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|solutionrelative:employeemanagement\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|d:\\jeet\\c#\\employeemanagement\\employeemanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{63A94A5E-51D6-4787-8B34-E38C52C6D265}|EmployeeManagement\\EmployeeManagement.csproj|solutionrelative:employeemanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Views\\Home\\Create.cshtml",
+              "RelativeDocumentMoniker": "EmployeeManagement\\Views\\Home\\Create.cshtml",
+              "ToolTip": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Views\\Home\\Create.cshtml",
+              "RelativeToolTip": "EmployeeManagement\\Views\\Home\\Create.cshtml",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAswBsAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-06-05T04:59:09.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IEmployeeRepository.cs",
+              "DocumentMoniker": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Models\\IEmployeeRepository.cs",
+              "RelativeDocumentMoniker": "EmployeeManagement\\Models\\IEmployeeRepository.cs",
+              "ToolTip": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Models\\IEmployeeRepository.cs",
+              "RelativeToolTip": "EmployeeManagement\\Models\\IEmployeeRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-05T04:03:03.438Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MockEmployeeRepository.cs",
+              "DocumentMoniker": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Models\\MockEmployeeRepository.cs",
+              "RelativeDocumentMoniker": "EmployeeManagement\\Models\\MockEmployeeRepository.cs",
+              "ToolTip": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Models\\MockEmployeeRepository.cs",
+              "RelativeToolTip": "EmployeeManagement\\Models\\MockEmployeeRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACEAAAAcAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T08:31:56.206Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Employee.cs",
+              "DocumentMoniker": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Models\\Employee.cs",
+              "RelativeDocumentMoniker": "EmployeeManagement\\Models\\Employee.cs",
+              "ToolTip": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Models\\Employee.cs",
+              "RelativeToolTip": "EmployeeManagement\\Models\\Employee.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T08:31:24.453Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Dept.cs",
+              "DocumentMoniker": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Models\\Dept.cs",
+              "RelativeDocumentMoniker": "EmployeeManagement\\Models\\Dept.cs",
+              "ToolTip": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Models\\Dept.cs",
+              "RelativeToolTip": "EmployeeManagement\\Models\\Dept.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T08:29:31.013Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "EmployeeManagement\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "EmployeeManagement\\Controllers\\HomeController.cs",
+              "ViewState": "AQIAACwAAAAAAAAAAAAwwDoAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-01T08:28:52.36Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Program.cs",
+              "RelativeDocumentMoniker": "EmployeeManagement\\Program.cs",
+              "ToolTip": "D:\\Jeet\\C#\\EmployeeManagement\\EmployeeManagement\\Program.cs",
+              "RelativeToolTip": "EmployeeManagement\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADMAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-03T06:39:08.505Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
