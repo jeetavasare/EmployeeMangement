@@ -5,15 +5,17 @@ using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 builder.Services.AddMvc();
-builder.Services.AddSingleton<IEmployeeRepository,MockEmployeeRepository>();
+
+builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
+builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
+
 
 var app = builder.Build();
 
-var config = builder.Configuration;
 var env = app.Environment;
 
-builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(config.GetConnectionString("EmployeeDbConnection")));
 
 if (env.IsDevelopment())
 {
