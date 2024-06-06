@@ -1,3 +1,4 @@
+using EmployeeManagement;
 using EmployeeManagement.Models;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
-builder.Services.AddSingleton<IEmployeeRepository,MockEmployeeRepository>();
+builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
 
 var app = builder.Build();
 
