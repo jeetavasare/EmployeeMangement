@@ -1,6 +1,4 @@
-﻿using EmployeeManagement.Models;
-
-namespace EmployeeManagement
+﻿namespace EmployeeManagement.Models
 {
     public class SQLEmployeeRepository : IEmployeeRepository
     {
@@ -34,8 +32,9 @@ namespace EmployeeManagement
             return context.Employees;
         }
 
-        public Employee GetEmployee(int id) { 
-        
+        public Employee GetEmployee(int id)
+        {
+
             return context.Employees.Find(id); ;
         }
 

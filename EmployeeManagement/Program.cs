@@ -1,4 +1,3 @@
-using EmployeeManagement;
 using EmployeeManagement.Models;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
