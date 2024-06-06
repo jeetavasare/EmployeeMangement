@@ -8,11 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
 builder.Services.AddSingleton<IEmployeeRepository,MockEmployeeRepository>();
 
-
 var app = builder.Build();
 
 var config = builder.Configuration;
 var env = app.Environment;
+
+builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(config.GetConnectionString("EmployeeDbConnection")));
 
 if (env.IsDevelopment())
 {
