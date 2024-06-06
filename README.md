@@ -5,5 +5,5 @@ OR Run
 ```
 dotnet run
 ```  
-inside the project folder  
+Inside the project folder  
 
