@@ -1,11 +1,14 @@
 using EmployeeManagement.Models;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
 builder.Services.AddSingleton<IEmployeeRepository,MockEmployeeRepository>();
+
+
 var app = builder.Build();
 
 var config = builder.Configuration;
