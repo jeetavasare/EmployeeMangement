@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
-builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
+builder.Services.AddSingleton<IEmployeeRepository,MockEmployeeRepository>();
 
 var app = builder.Build();
 
