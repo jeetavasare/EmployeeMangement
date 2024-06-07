@@ -3,6 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+#Custom Files
+# Ignore all files in the Images directory
+/EmployeeMangement/wwwroot/Images/*
+
+# Except for file.png
+!/EmployeeMangement/wwwroot/Images/file.png
+
 # User-specific files
 *.rsuser
 *.suo
@@ -396,3 +403,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/EmployeeManagement/wwwroot/Images/e030dacf-1a5b-4cb7-8aef-8a745973bb4f_pxfuel.jpg
