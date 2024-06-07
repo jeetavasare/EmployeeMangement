@@ -1,6 +1,8 @@
 ﻿using EmployeeManagement.Models;
 using EmployeeManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EmployeeManagement.Controllers
 {
@@ -43,7 +45,6 @@ namespace EmployeeManagement.Controllers
                 Employee = model,
                 PageTitle = "Employee Details"
             };
-
             return View(homeDetailsViewModel);
             
         }
@@ -66,11 +67,12 @@ namespace EmployeeManagement.Controllers
                     uniqueFilename = Guid.NewGuid().ToString()+ "_" + model.Photo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFilename);
 
-                    //model.Photo.CopyTo(new FileStream(filePath,FileMode.Create));
-                    //FileStream fs = new FileStream(filePath, FileMode.Create);
+                    //model.Photo.CopyTo(new FileStream(filePath,FileMode.Create)); //method1
+
+                    //FileStream fs = new FileStream(filePath, FileMode.Create); //method2
                     //model.Photo.CopyTo(fs);
                     //fs.Close();
-                    using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                    using (FileStream fs = new FileStream(filePath, FileMode.Create)) //method3
                     {
                         model.Photo.CopyTo(fs);
                     }
@@ -86,6 +88,65 @@ namespace EmployeeManagement.Controllers
                 return RedirectToAction("Details", new { id = newEmployee.Id });
             }
             return View();
+        }
+
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            Employee employeeTobeEdited = _employeeRepository.GetEmployee(id);
+            EmployeeEditViewModel employeeEditViewModelObj = new EmployeeEditViewModel
+            {
+                Id = employeeTobeEdited.Id,
+                Name = employeeTobeEdited.Name,
+                Email = employeeTobeEdited.Email,
+                Department = employeeTobeEdited.Department,
+                ExistingPhotoPath = employeeTobeEdited.PhotoPath
+            };
+            return View(employeeEditViewModelObj);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EmployeeEditViewModel updatedEmployee)
+        {
+            if (ModelState.IsValid)
+            {
+                Employee employee = _employeeRepository.GetEmployee(updatedEmployee.Id);
+                employee.Name = updatedEmployee.Name;
+                employee.Email = updatedEmployee.Email;
+                employee.Department = updatedEmployee.Department;
+
+                if(updatedEmployee.Photo != null)
+                {
+                    if(updatedEmployee.ExistingPhotoPath != null)
+                    {
+                        string existingprofile = Path.Combine(_webhostenvironment.WebRootPath, "images", updatedEmployee.ExistingPhotoPath);
+                        System.IO.File.Delete(existingprofile);
+                    }
+                    employee.PhotoPath = WriteUploadedProfileToImages(updatedEmployee);
+                }
+
+                _employeeRepository.Update(employee);
+
+                return RedirectToAction("Details", new { id = updatedEmployee.Id });
+            }
+            return View();
+        }
+
+        private string WriteUploadedProfileToImages(EmployeeEditViewModel updatedEmployee)
+        {
+            string uniqueFilename = "";
+            if (updatedEmployee.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(_webhostenvironment.WebRootPath, "images");
+                uniqueFilename = Guid.NewGuid().ToString() + "_" + updatedEmployee.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFilename);
+                using (FileStream fs = new FileStream(filePath, FileMode.Create)) //method3
+                {
+                    updatedEmployee.Photo.CopyTo(fs);
+                }
+            }
+
+            return uniqueFilename;
         }
     }
 }

@@ -18,7 +18,7 @@
                  <a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-primary m-1">Show</a>
                  @* @Html.ActionLink("View","details", "home", new {id = employee.Id}) generated entire a tag with innertext=view*@ 
                 @* <a href="@Url.Action("details", "home", new {id = employee.Id})" class="btn btn-primary">View</a> generates only string as link so cna be used in side href attrubute*@
-                <a href="#" class="btn btn-primary m-1">Edit</a>
+                <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary m-1">Edit</a>
                 <a href="#" class="btn btn-danger m-1">Delete</a>
             </div>
         </div>
