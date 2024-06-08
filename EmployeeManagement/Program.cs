@@ -21,7 +21,10 @@ if (env.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-
+else
+{
+    app.UseStatusCodePagesWithReExecute("/Error/{0}");
+}
 //app.Use(async (context, next) =>
 //{
 //    var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
@@ -76,15 +79,15 @@ app.UseEndpoints(endpoints =>
 app.MapGet("/bye", () => System.Diagnostics.Process.GetCurrentProcess().ProcessName);
 app.MapGet("/displayconfig", () => config["Mykey"]);
 //app.Run();
-app.Use(async (context, next) =>
-{
-    await next(); // Call the next middleware in the pipeline
+//app.Use(async (context, next) =>
+//{
+//    await next(); // Call the next middleware in the pipeline
 
-    if (context.Response.StatusCode == 404) // If no response was found
-    {
-        context.Response.ContentType = "text/plain";
-        await context.Response.WriteAsync(
-            "Terminal Middleware:Oops that's not a valid URL for this application"); //all other responses no in map.get
-    }
-});
+//    if (context.Response.StatusCode == 404) // If no response was found
+//    {
+//        context.Response.ContentType = "text/plain";
+//        await context.Response.WriteAsync(
+//            "Terminal Middleware:Oops that's not a valid URL for this application"); //all other responses no in map.get
+//    }
+//});
 app.Run();
