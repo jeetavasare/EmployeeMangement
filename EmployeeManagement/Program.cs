@@ -24,6 +24,7 @@ if (env.IsDevelopment())
 else
 {
     app.UseStatusCodePagesWithReExecute("/Error/{0}");
+    app.UseExceptionHandler("/Error");
 }
 //app.Use(async (context, next) =>
 //{
