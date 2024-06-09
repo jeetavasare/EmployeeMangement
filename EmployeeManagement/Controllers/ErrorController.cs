@@ -38,11 +38,13 @@ namespace EmployeeManagement.Controllers
 		public IActionResult Error()
 		{
 			var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
 			//ViewBag.exceptionPath = exceptionDetails.Path;
 			ViewBag.exceptionMessage = exceptionDetails.Error.Message;
 			//ViewBag.stackTrace = exceptionDetails.Error.StackTrace;
 
 			logger.LogError($"The path {exceptionDetails.Path} threw {exceptionDetails.Error.Message}");
+
 
 			return View();
 		}
