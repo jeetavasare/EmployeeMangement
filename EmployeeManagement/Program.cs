@@ -2,10 +2,21 @@ using EmployeeManagement.Models;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Web;
 using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Debug("init main");
+//logger.Warn("init warn");
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Host.UseNLog();
+
 builder.Services.AddMvc();
 
 builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
