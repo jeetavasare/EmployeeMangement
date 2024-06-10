@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Web;
 using System.Linq.Expressions;
@@ -26,6 +27,13 @@ builder.Services.AddDbContextPool<AppDbContext>
 
 builder.Services.AddIdentity<IdentityUser,IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.Configure<IdentityOptions>(options
+    => { options.Password.RequiredLength = 9; options.Password.RequireUppercase = false; }
+    );
+// or give the options in AddIdentity function itself
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { options.Password.RequiredLength = 9; options.Password.RequireUppercase = false; })
+//    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 
