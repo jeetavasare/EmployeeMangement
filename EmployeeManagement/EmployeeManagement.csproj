@@ -31,4 +31,8 @@
     <None Include="Views\_ViewImports.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\userprofiles\" />
+  </ItemGroup>
+
 </Project>

@@ -32,8 +32,6 @@ namespace EmployeeManagement.Controllers
         [Route("[action]/{id?}")]
         public ViewResult Details(int? id)
         {
-            throw new Exception("LoL");
-
             Employee model = _employeeRepository.GetEmployee(id??1);
             if (model == null)
             {
