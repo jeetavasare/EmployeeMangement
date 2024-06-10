@@ -1,4 +1,5 @@
 using EmployeeManagement.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -20,8 +21,11 @@ builder.Host.UseNLog();
 builder.Services.AddMvc();
 
 builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
-builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
+builder.Services.AddDbContextPool<AppDbContext>
+    (options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
 
+builder.Services.AddIdentity<IdentityUser,IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 
@@ -61,6 +65,7 @@ else
 //app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 
 app.UseRouting();
 //app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
