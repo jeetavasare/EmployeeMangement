@@ -43,9 +43,24 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto">
+                @if (signInManger.IsSignedIn(User))
+                {
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="account" asp-action="register">Register</a>
-                    </li>
+                        <form method="post" asp-controller="Account" asp-action="logout">
+                            <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">Logout @User.Identity.Name</button>
+                        </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                    }
+                    
                 </ul>
             </div>
 
