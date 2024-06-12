@@ -61,14 +61,21 @@ namespace EmployeeManagement.Controllers
 		}
 		
 		[HttpPost]
-		public async Task<IActionResult> Login(LoginViewModel model)
+		public async Task<IActionResult> Login(LoginViewModel model, string ReturnUrl)
 		{
 			if (ModelState.IsValid)
 			{
 				var result = await signInManager.PasswordSignInAsync(model.Email, model.Password,model.RememberMe,false);
 				if (result.Succeeded)
 				{
-					return RedirectToAction("Index", "Home");
+					if (!string.IsNullOrEmpty(ReturnUrl))
+					{
+						return Redirect(ReturnUrl);
+					}
+					else
+					{
+						return RedirectToAction("Index", "Home");
+					}
 				}
 				ModelState.AddModelError("", "Invalid Username of password");
 				return View(model);

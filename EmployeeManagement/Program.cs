@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Web;
+using NLog.Web.LayoutRenderers;
 using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,6 +77,7 @@ app.UseStaticFiles();
 app.UseAuthentication();
 
 app.UseRouting();
+app.UseAuthorization();
 //app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
 
 //custom implementation of mapdefaultcontrollerroute, equivalent to below

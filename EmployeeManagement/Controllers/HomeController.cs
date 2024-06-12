@@ -1,11 +1,13 @@
 ﻿using EmployeeManagement.Models;
 using EmployeeManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EmployeeManagement.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -18,9 +20,10 @@ namespace EmployeeManagement.Controllers
         }
 
 
-		//[Route("")]
-		//[Route("Home")]
-		//[Route("Home/Index")]
+        //[Route("")]
+        //[Route("Home")]
+        //[Route("Home/Index")]
+        [AllowAnonymous]
 		public ViewResult Index()
         {
             return View(_employeeRepository.GetAllEmployees());
@@ -29,6 +32,7 @@ namespace EmployeeManagement.Controllers
             //return "From Controller:Home->Index()";
         }
 
+        [AllowAnonymous]
         [Route("[action]/{id?}")]
         public ViewResult Details(int? id)
         {
