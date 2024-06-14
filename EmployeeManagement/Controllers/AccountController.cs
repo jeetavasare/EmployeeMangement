@@ -68,8 +68,9 @@ namespace EmployeeManagement.Controllers
 				var result = await signInManager.PasswordSignInAsync(model.Email, model.Password,model.RememberMe,false);
 				if (result.Succeeded)
 				{
-					if (!string.IsNullOrEmpty(ReturnUrl))
+					if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
 					{
+						//return LocalRedirect(ReturnUrl); This will throw exception if redirect is not local instead check for it in ig statement
 						return Redirect(ReturnUrl);
 					}
 					else
