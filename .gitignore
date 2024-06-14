@@ -5,10 +5,12 @@
 
 #Custom Files
 # Ignore all files in the Images directory
-EmployeeManagement/wwwroot/Images/*
+EmployeeManagement/wwwroot/Images/userprofiles
 
 # Except for file.png
 !EmployeeManagement/wwwroot/Images/file.png
+!EmployeeManagement/wwwroot/Images/userprofiles/file.png
+!EmployeeManagement/wwwroot/Images/download.png
 
 # User-specific files
 *.rsuser

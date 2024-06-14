@@ -1,9 +1,12 @@
 using EmployeeManagement.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Web;
+using NLog.Web.LayoutRenderers;
 using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,8 +23,18 @@ builder.Host.UseNLog();
 builder.Services.AddMvc();
 
 builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
-builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
+builder.Services.AddDbContextPool<AppDbContext>
+    (options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
 
+builder.Services.AddIdentity<IdentityUser,IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.Configure<IdentityOptions>(options
+    => { options.Password.RequiredLength = 9; options.Password.RequireUppercase = false; }
+    );
+// or give the options in AddIdentity function itself
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { options.Password.RequiredLength = 9; options.Password.RequireUppercase = false; })
+//    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 
@@ -61,8 +74,10 @@ else
 //app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 
 app.UseRouting();
+app.UseAuthorization();
 //app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
 
 //custom implementation of mapdefaultcontrollerroute, equivalent to below

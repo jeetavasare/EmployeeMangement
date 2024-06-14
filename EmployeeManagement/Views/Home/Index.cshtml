@@ -7,7 +7,7 @@
 <div class="card-deck">
     @foreach (var employee in Model)
     {
-        var photoPath = "~/images/" + (employee.PhotoPath ?? "file.png");
+        var photoPath = "~/images/userprofiles/" + (employee.PhotoPath ?? "file.png");
         <div class="card m-3">
             <div class="card-header">
                 <h3>@employee.Name</h3>
