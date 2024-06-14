@@ -61,7 +61,7 @@ namespace EmployeeManagement.Controllers
 		}
 		
 		[HttpPost]
-		public async Task<IActionResult> Login(LoginViewModel model, string ReturnUrl)
+		public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl)
 		{
 			if (ModelState.IsValid)
 			{
