@@ -71,7 +71,7 @@ namespace EmployeeManagement.Controllers
                 string uniqueFilename = "";
                 if (model.Photo != null)
                 {
-                    string uploadsFolder = Path.Combine(_webhostenvironment.WebRootPath, "images");
+                    string uploadsFolder = Path.Combine(_webhostenvironment.WebRootPath, "images/userprofiles");
                     uniqueFilename = Guid.NewGuid().ToString()+ "_" + model.Photo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFilename);
 
@@ -127,7 +127,7 @@ namespace EmployeeManagement.Controllers
                 {
                     if(updatedEmployee.ExistingPhotoPath != null)
                     {
-                        string existingprofile = Path.Combine(_webhostenvironment.WebRootPath, "images", updatedEmployee.ExistingPhotoPath);
+                        string existingprofile = Path.Combine(_webhostenvironment.WebRootPath, "images/userprofiles", updatedEmployee.ExistingPhotoPath);
                         System.IO.File.Delete(existingprofile);
                     }
                     employee.PhotoPath = WriteUploadedProfileToImages(updatedEmployee);
@@ -145,7 +145,7 @@ namespace EmployeeManagement.Controllers
             string uniqueFilename = "";
             if (updatedEmployee.Photo != null)
             {
-                string uploadsFolder = Path.Combine(_webhostenvironment.WebRootPath, "images");
+                string uploadsFolder = Path.Combine(_webhostenvironment.WebRootPath, "images/userprofiles");
                 uniqueFilename = Guid.NewGuid().ToString() + "_" + updatedEmployee.Photo.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFilename);
                 using (FileStream fs = new FileStream(filePath, FileMode.Create)) //method3
