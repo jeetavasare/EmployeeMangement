@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Controllers;
 using EmployeeManagement.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Execution;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,5 +24,7 @@ namespace EmployeeManagement.ViewModels
 		[DisplayName("Confirm Password")]
 		[Compare("Password", ErrorMessage = "Password and Confirm Password do not match")]
         public string ConfirmPassword { get; set; }
-    }
+
+		public string City { get; set; }
+	}
 }
