@@ -26,7 +26,7 @@ builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
 builder.Services.AddDbContextPool<AppDbContext>
     (options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
 
-builder.Services.AddIdentity<IdentityUser,IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.Configure<IdentityOptions>(options
