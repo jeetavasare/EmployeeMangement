@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
 {
+	[AllowAnonymous]
 	public class AccountController : Controller
 	{
         private readonly UserManager<ApplicationUser> userManager;
@@ -17,6 +18,7 @@ namespace EmployeeManagement.Controllers
             this.signInManager = signInManager;
         }
 
+		[AllowAnonymous]
         [HttpGet]
 		public IActionResult Register()
 		{
@@ -40,6 +42,8 @@ namespace EmployeeManagement.Controllers
 			}
 		}
 
+
+		[AllowAnonymous]
 		[HttpPost]
 		public async Task<IActionResult> Register(RegisterViewModel model)
 		{
@@ -66,6 +70,8 @@ namespace EmployeeManagement.Controllers
 			return View(model);
 		}
 
+
+		[AllowAnonymous]
 		[HttpPost]
 		public async Task<IActionResult> Logout()
 		{
@@ -73,13 +79,14 @@ namespace EmployeeManagement.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-
+		[AllowAnonymous]
 		[HttpGet]
 		public IActionResult Login()
 		{
 			return View();
 		}
-		
+
+		[AllowAnonymous]
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl)
 		{
