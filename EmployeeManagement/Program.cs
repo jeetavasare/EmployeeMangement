@@ -1,6 +1,8 @@
 using EmployeeManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,7 +22,11 @@ builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 builder.Host.UseNLog();
 
-builder.Services.AddMvc();
+builder.Services.AddMvc(options =>
+{
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
 
 builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
 builder.Services.AddDbContextPool<AppDbContext>
@@ -43,6 +49,7 @@ var env = app.Environment;
 
 if (env.IsDevelopment())
 {
+    app.UseStatusCodePagesWithReExecute("/Error/{0}");
     app.UseDeveloperExceptionPage();
 }
 else
