@@ -99,6 +99,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public ViewResult Edit(int id)
         {
             Employee employeeTobeEdited = _employeeRepository.GetEmployee(id);
