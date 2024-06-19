@@ -42,6 +42,14 @@
                     <li class="nav-item">
                         <a asp-controller="Home" asp-action="Create" class="nav-link">Create</a>
                     </li>
+                    @if (signInManger.IsSignedIn(User) && User.IsInRole("Administrator"))
+                    {
+                        <li class="nav-item">
+                            <a asp-controller="Administration" asp-action="ListRoles" class="nav-link">Manage Roles</a>
+                        </li>
+                    }
+
+
                 </ul>
 
                 <ul class="navbar-nav ms-auto">
