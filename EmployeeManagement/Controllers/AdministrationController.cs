@@ -258,5 +258,30 @@ namespace EmployeeManagement.Controllers
 			}
 			return View(model);
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> DeleteUser(string id)
+		{
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The user with id:{id} could not be found";
+                return View("NotFound");
+            }
+			else
+			{
+				var result = await userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers", "Administration");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View("ListUsers");
+            }
+		}
 	}
 }
