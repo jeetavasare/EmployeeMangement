@@ -21,8 +21,8 @@ namespace EmployeeManagement.Controllers
 				case 404:
 					var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
 					ViewBag.ErrorMessage = "The resource you are looking for could not be found";
-					ViewBag.URL = statusCodeResult.OriginalPath;
-					ViewBag.QS = statusCodeResult.OriginalQueryString;
+					//ViewBag.URL = statusCodeResult.OriginalPath;
+					//ViewBag.QS = statusCodeResult.OriginalQueryString;
 
 					logger.LogWarning($"404 Error Occured. Path: {statusCodeResult.OriginalPath}" +
 						$"\nQuery String: {statusCodeResult.OriginalQueryString}");

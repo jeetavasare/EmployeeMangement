@@ -12,11 +12,13 @@ namespace EmployeeManagement.Controllers
 	{
 		private readonly RoleManager<IdentityRole> roleManger;
 		private readonly UserManager<ApplicationUser> userManager;
+		private readonly ILogger<AdministrationController> logger;
 
-		public AdministrationController(RoleManager<IdentityRole> roleManger, UserManager<ApplicationUser> userManager)
+		public AdministrationController(RoleManager<IdentityRole> roleManger, UserManager<ApplicationUser> userManager, ILogger<AdministrationController> logger)
 		{
 			this.roleManger = roleManger;
 			this.userManager = userManager;
+			this.logger = logger;
 		}
 
 		[HttpGet]
@@ -295,17 +297,28 @@ namespace EmployeeManagement.Controllers
             }
 			else
 			{
-				var result = await roleManger.DeleteAsync(role);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ListRoles", "Administration");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-				}
+				try
+				{
+					var result = await roleManger.DeleteAsync(role);
+					if (result.Succeeded)
+					{
+						return RedirectToAction("ListRoles", "Administration");
+					}
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError("", error.Description);
+					}
 
-                return View("ListRoles");
+					return View("ListRoles");
+				}
+				catch (DbUpdateException ex)
+				{
+					logger.LogError($"{ex.Message} Role {role.Name} is in use");
+					logger.LogError($"{ex.InnerException}");
+					ViewBag.ErrorTitle = $"Role {role.Name} is in use";
+					ViewBag.ErrorMessage = $"Role {role.Name} could not be deleted because there are users which have been assigned to this role. First remove all users from this role and try again";
+					return View("Error");
+				}
             }
 		}
 
