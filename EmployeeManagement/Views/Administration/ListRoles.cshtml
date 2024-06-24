@@ -21,8 +21,18 @@
                 <h5 class="card-title">@role.Name</h5>
             </div>
             <div class="card-footer">
-                <a asp-action="EditRole" asp-controller="Administration" asp-route-id = "@role.Id" class="btn btn-primary">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
+                    <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
+
+                    <span style="display:none" id="confirmDeleteSpan_@role.Id">
+                        <span>Are you sure you want to delete?. This action cannot be undone</span>
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                        <a onclick="confirmDelete('@role.Id',false)" class="btn btn-primary">No</a>
+                    </span>
+                    <span id="deleteSpan_@role.Id">
+                        <a onclick="confirmDelete('@role.Id',true)" class="btn btn-danger">Delete</a>
+                    </span>
+                </form>
             </div>
         </div>
     }
@@ -43,4 +53,9 @@ else
             </a>
         </div>
     </div>
+}
+
+@section Scripts
+            {
+    <script src="~/js/customscript.js"></script>
 }

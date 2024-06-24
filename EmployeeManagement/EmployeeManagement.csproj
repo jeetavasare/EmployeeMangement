@@ -35,4 +35,10 @@
     <Folder Include="wwwroot\Images\userprofiles\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Administration\EditUsers.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
