@@ -1,9 +1,18 @@
-﻿<h3>An internal error occured</h3>
-<h4>Please contact the developer at github.com/jeetavasare</h4>
+﻿@if(ViewBag.ErrorTitle == null)
+{
+	<h3>An internal error occured</h3>
+	<h4>Please contact the developer at github.com/jeetavasare</h4>
+}
+else
+{
+	<div class="alert alert-danger"><h1>@ViewBag.ErrorTitle</h1></div>
+	<div class="alert alert-danger"><h4>@ViewBag.ErrorMessage</h4></div>
+}
+
 
 
 
 
 @* <div class="alert alert-danger"><h4>@ViewBag.exceptionPath</h4></div> *@
-<div class="alert alert-danger"><h4>@ViewBag.exceptionMessage</h4></div>
+@* <div class="alert alert-danger"><h4>@ViewBag.exceptionMessage</h4></div> *@
 @* <div class="alert alert-danger"><h4>@ViewBag.stackTrace</h4></div> *@
