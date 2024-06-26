@@ -1,23 +1,18 @@
-﻿@model List<UserRolesViewModel>
-
-@{
-    var userId = ViewBag.userId;
-}
+﻿@model UserClaimsViewModel
 
 <form method="post">
     <div class="card">
         <div class="card-header">
-            <h2>Manage User Roles</h2>
+            <h2>Manage User Claims</h2>
         </div>
         <div class="card-body">
-            @for (int i = 0; i < Model.Count; i++)
+            @for (int i = 0; i < Model.Claims.Count; i++)
             {
                 <div class="form-check m-1">
-                    <input type="hidden" asp-for="@Model[i].RoleId" />
-                    <input type="hidden" asp-for="@Model[i].RoleName" />
-                    <input asp-for="@Model[i].IsSelected" class="form-check-input" />
-                    <label class="form-check-label" asp-for="@Model[i].IsSelected">
-                        @Model[i].RoleName
+                    <input type="hidden" asp-for="@Model.Claims[i].ClaimType" />
+                    <input asp-for="@Model.Claims[i].IsSelected" class="form-check-input" />
+                    <label class="form-check-label" asp-for="@Model.Claims[i].IsSelected">
+                        @Model.Claims[i].ClaimType
                     </label>
                 </div>
             }
@@ -26,7 +21,7 @@
         <div class="card-footer">
             <input type="submit" value="Update" class="btn btn-primary"
                    style="width:auto" />
-            <a asp-action="EditUsers" asp-route-id="@userId"
+            <a asp-action="EditUsers" asp-route-id="@Model.UserId"
                class="btn btn-primary" style="width:auto">Cancel</a>
         </div>
     </div>
