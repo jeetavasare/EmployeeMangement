@@ -469,5 +469,12 @@ namespace EmployeeManagement.Controllers
 
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View("AccessDenied");
+        }
+
     }
 }
