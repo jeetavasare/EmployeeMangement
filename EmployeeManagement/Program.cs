@@ -27,7 +27,14 @@ builder.Services.AddMvc(options =>
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 });
-builder.Services.AddAuthorization(options => options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role")));
+builder.Services.AddAuthorization(options
+    =>
+    {
+    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role").RequireClaim("Create Role"));
+    options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+    }
+    
+    );
 builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
 builder.Services.AddDbContextPool<AppDbContext>
     (options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
