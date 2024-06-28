@@ -30,8 +30,9 @@ builder.Services.AddMvc(options =>
 builder.Services.AddAuthorization(options
     =>
     {
-    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role").RequireClaim("Create Role"));
-    options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true").RequireClaim("Create Role", "true"));
+    options.AddPolicy("EditRolePolicy", policy => policy.RequireAssertion(context 
+        => context.User.IsInRole("Admin") && context.User.HasClaim("Edit Role", "true") || context.User.IsInRole("SuperAdmin"))); //funct type calling
     }
     
     );
