@@ -1,4 +1,5 @@
 using EmployeeManagement.Models;
+using EmployeeManagement.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -27,15 +28,26 @@ builder.Services.AddMvc(options =>
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 });
+//builder.Services.AddAuthorization(options
+//    =>
+//    {
+//    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true").RequireClaim("Create Role", "true"));
+//    options.AddPolicy("EditRolePolicy", policy => policy.RequireAssertion(context 
+//        => context.User.IsInRole("Admin") && context.User.HasClaim("Edit Role", "true") || context.User.IsInRole("SuperAdmin"))); //funct type calling
+//    }
+
+//    );
+
 builder.Services.AddAuthorization(options
     =>
     {
-    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true").RequireClaim("Create Role", "true"));
-    options.AddPolicy("EditRolePolicy", policy => policy.RequireAssertion(context 
-        => context.User.IsInRole("Admin") && context.User.HasClaim("Edit Role", "true") || context.User.IsInRole("SuperAdmin"))); //funct type calling
+        options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true").RequireClaim("Create Role", "true"));
+        options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequiement()));
     }
-    
+
     );
+
+builder.Services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
