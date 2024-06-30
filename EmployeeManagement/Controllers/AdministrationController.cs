@@ -61,7 +61,7 @@ namespace EmployeeManagement.Controllers
 			return View(roles);
 		}
 
-		[Authorize(Policy ="EditRolePolicy")]
+		//[Authorize(Policy ="EditRolePolicy")]
 		[HttpGet]
 		public async Task<IActionResult> EditRole(string id)
 		{
@@ -89,7 +89,7 @@ namespace EmployeeManagement.Controllers
 		}
 
 		[HttpPost]
-        [Authorize(Policy = "EditRolePolicy")]
+        //[Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model, string id)
 		{
 			var role = await roleManger.FindByIdAsync(model.Id);
@@ -211,7 +211,7 @@ namespace EmployeeManagement.Controllers
 			var user = await userManager.FindByIdAsync(id);
 			if (user == null)
 			{
-				ViewBag.ErrorMessage = $"The user with id:{id} could not be found";
+				ViewBag.ErrorMessage = $"The user with userId:{id} could not be found";
 				return View("NotFound");
 			}
 
@@ -239,7 +239,7 @@ namespace EmployeeManagement.Controllers
 				var user = await userManager.FindByIdAsync(model.Id);
 				if (user == null)
 				{
-					ViewBag.ErrorMessage = $"The user with id:{model.Id} could not be found";
+					ViewBag.ErrorMessage = $"The user with userId:{model.Id} could not be found";
 					return View("NotFound");
 				}
 				else
@@ -270,7 +270,7 @@ namespace EmployeeManagement.Controllers
             var user = await userManager.FindByIdAsync(id);
             if (user == null)
             {
-                ViewBag.ErrorMessage = $"The user with id:{id} could not be found";
+                ViewBag.ErrorMessage = $"The user with userId:{id} could not be found";
                 return View("NotFound");
             }
 			else
@@ -296,7 +296,7 @@ namespace EmployeeManagement.Controllers
             var role = await roleManger.FindByIdAsync(id);
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"The role with id:{id} could not be found";
+                ViewBag.ErrorMessage = $"The role with userId:{id} could not be found";
                 return View("NotFound");
             }
 			else
@@ -327,15 +327,16 @@ namespace EmployeeManagement.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> ManageUserRoles(string id)
+        [Authorize(Policy = "EditRolePolicy")]
+		public async Task<IActionResult> ManageUserRoles(string userId)
 		{
-			ViewBag.userId = id;
+			ViewBag.userId = userId;
 
-			var user = await userManager.FindByIdAsync(id);
+			var user = await userManager.FindByIdAsync(userId);
 
 			if(user == null)
 			{
-				ViewBag.ErrorMessage = $"The user with id {id} could not be found";
+				ViewBag.ErrorMessage = $"The user with userId {userId} could not be found";
 				return View("NotFound");
 			}
 
@@ -361,6 +362,7 @@ namespace EmployeeManagement.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Policy = "EditRolePolicy")]
 		public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string id)
 		{
 			var user = await userManager.FindByIdAsync(id);
