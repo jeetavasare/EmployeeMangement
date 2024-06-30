@@ -25,9 +25,9 @@ namespace EmployeeManagement.Security
 
             string adminIdBeingEdited = httpContextAccessor.HttpContext.Request.Query["userId"];
 
-            if(context.User.IsInRole("Administrator")
+            if((context.User.IsInRole("Administrator")
                 && context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true")
-                && adminIdBeingEdited.ToLower() != loggedInAdminId.ToLower())
+                && adminIdBeingEdited.ToLower() != loggedInAdminId.ToLower()) || context.User.IsInRole("SuperAdmin"))
             {
                 context.Succeed(requirement);
             }

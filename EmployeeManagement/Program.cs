@@ -42,10 +42,13 @@ builder.Services.AddAuthorization(options
     =>
     {
         options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role", "true").RequireClaim("Create Role", "true"));
+        options.AddPolicy("IsAdminPolicy", policy => policy.RequireAssertion(context =>  context.User.IsInRole("Administrator") || context.User.IsInRole("SuperAdmin") ));
         options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequiement()));
     }
 
     );
+
+
 
 builder.Services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
 
