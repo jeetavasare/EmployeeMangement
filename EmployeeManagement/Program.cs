@@ -51,6 +51,7 @@ builder.Services.AddAuthorization(options
 
 
 builder.Services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
