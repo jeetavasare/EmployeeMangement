@@ -6,7 +6,7 @@
 #Custom Files
 # Ignore all files in the Images directory
 EmployeeManagement/wwwroot/Images/userprofiles
-
+secrets.json
 # Except for file.png
 !EmployeeManagement/wwwroot/Images/file.png
 !EmployeeManagement/wwwroot/Images/userprofiles/file.png
