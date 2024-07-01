@@ -14,6 +14,7 @@ using System.Linq.Expressions;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+builder.Configuration.AddJsonFile("secrets.json");
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 //logger.Warn("init warn");
@@ -28,6 +29,13 @@ builder.Services.AddMvc(options =>
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 });
+
+builder.Services.AddAuthentication().AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        
+    });
 //builder.Services.AddAuthorization(options
 //    =>
 //    {
