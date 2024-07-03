@@ -86,11 +86,11 @@ namespace EmployeeManagement.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-		public async Task<IActionResult> Login(string returnUrl)
+		public async Task<IActionResult> Login(string? returnUrl)
 		{
 			LoginViewModel model = new LoginViewModel
 			{
-				ReturnUrl = returnUrl,
+				ReturnUrl = returnUrl??"~/",
 				ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
 			};
 
@@ -140,6 +140,21 @@ namespace EmployeeManagement.Controllers
                 return View("Login", loginViewModel);
             }
 
+
+
+                // Get the email claim value
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+			ApplicationUser user = null;
+
+			if (email != null)
+			{
+				user = await userManager.FindByEmailAsync(email);
+				if (user != null && !user.EmailConfirmed)
+				{
+					ModelState.AddModelError("", "Email not confirmed yet");
+					return View("Login", loginViewModel);
+				}
+			}
             // If the user already has a login (i.e if there is a record in AspNetUserLogins
             // table) then sign-in the user with this external login provider
             var signInResult = await signInManager.ExternalLoginSignInAsync(info.LoginProvider,
@@ -153,13 +168,10 @@ namespace EmployeeManagement.Controllers
             // a local account
             else
             {
-                // Get the email claim value
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
 
                 if (email != null)
                 {
                     // Create a new user without password if we do not have a user already
-                    var user = await userManager.FindByEmailAsync(email);
 
                     if (user == null)
                     {
@@ -192,8 +204,16 @@ namespace EmployeeManagement.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl)
 		{
+			model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
 			if (ModelState.IsValid)
 			{
+				var user = await userManager.FindByEmailAsync(model.Email);
+				if (user!=null && !user.EmailConfirmed && (await userManager.CheckPasswordAsync(user, model.Password)))
+				{
+					ModelState.AddModelError("", "Email not confirmed for this account");
+					return View(model);
+				}
 				var result = await signInManager.PasswordSignInAsync(model.Email, model.Password,model.RememberMe,false);
 				if (result.Succeeded)
 				{
@@ -207,7 +227,7 @@ namespace EmployeeManagement.Controllers
 						return RedirectToAction("Index", "Home");
 					}
 				}
-				ModelState.AddModelError("", "Invalid Username of password");
+				ModelState.AddModelError("", "Invalid Login Attempt");
 				return View(model);
             }
 			return View(model);

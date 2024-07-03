@@ -73,7 +73,7 @@ builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.Configure<IdentityOptions>(options
-    => { options.Password.RequiredLength = 7; options.Password.RequireUppercase = false; }
+    => { options.Password.RequiredLength = 7; options.Password.RequireUppercase = false;options.SignIn.RequireConfirmedEmail = true; }
     );
 // or give the options in AddIdentity function itself
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { options.Password.RequiredLength = 9; options.Password.RequireUppercase = false; })
