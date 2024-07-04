@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Account\ConfirmEmail.cshtml" />
     <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
   </ItemGroup>
 
@@ -38,12 +39,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Account\ConfirmEmail.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Views\Administration\AccessDenied.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Views\Administration\EditUsers.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Account\ConfirmEmail.cshtml" />
   </ItemGroup>
 
 </Project>

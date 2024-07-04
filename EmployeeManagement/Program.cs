@@ -69,15 +69,17 @@ builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
 builder.Services.AddDbContextPool<AppDbContext>
     (options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
 
-builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>();
-
-builder.Services.Configure<IdentityOptions>(options
-    => { options.Password.RequiredLength = 7; options.Password.RequireUppercase = false;options.SignIn.RequireConfirmedEmail = true; }
-    );
-// or give the options in AddIdentity function itself
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { options.Password.RequiredLength = 9; options.Password.RequireUppercase = false; })
+//builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
 //    .AddEntityFrameworkStores<AppDbContext>();
+
+//builder.Services.Configure<IdentityOptions>(options
+//    => { options.Password.RequiredLength = 7; options.Password.RequireUppercase = false;options.SignIn.RequireConfirmedEmail = true;}
+//    );
+// or give the options in AddIdentity function itself
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.Password.RequiredLength = 3;
+    options.Password.RequireUppercase = false; options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredUniqueChars = 0; options.Password.RequireDigit = false;options.Password.RequireLowercase = false; })
+    .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
 var app = builder.Build();
 
