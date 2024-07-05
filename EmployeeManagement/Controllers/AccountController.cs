@@ -3,6 +3,7 @@ using EmployeeManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Security.Claims;
 
 namespace EmployeeManagement.Controllers
@@ -12,11 +13,13 @@ namespace EmployeeManagement.Controllers
 	{
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly ILogger<AccountController> logger;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AccountController> logger)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.logger = logger;
         }
 
 		[AllowAnonymous]
@@ -60,12 +63,21 @@ namespace EmployeeManagement.Controllers
 
 				if (result.Succeeded)
 				{
+					var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+					var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+					logger.LogWarning(confirmationLink);
+
 					if(signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
 					{
 						return RedirectToAction("ListUsers", "Administration");
 					}
-					await signInManager.SignInAsync(user, isPersistent: false);
-					return RedirectToAction("Index", "Home");
+
+					ViewBag.ErrorTitle = "Registration Successful";
+					ViewBag.ErrorMessage = $"Before you can login,please confirm your email by clicking the confirmation link emailed to {user.Email}";
+					return View("Error");
+					//await signInManager.SignInAsync(user, isPersistent: false);
+					//return RedirectToAction("Index", "Home");
 				}
 				foreach (var error in result.Errors)
 				{
@@ -74,6 +86,30 @@ namespace EmployeeManagement.Controllers
 			}
 			return View(model);
 		}
+
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<IActionResult> ConfirmEmail(string userId, string token)
+		{
+			if(userId == null || token == null)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+			var user = await userManager.FindByIdAsync(userId);
+			if(user == null)
+			{
+				//Actually the user with the incoming id is invalid
+				ViewBag.ErrorMessage = $"Invalid Application Link";
+			}
+            var result = await userManager.ConfirmEmailAsync(user, token);
+			if (result.Succeeded)
+			{
+				return View();
+			}
+
+			ViewBag.ErrorTitle = "Unable to verify confirmation link";
+			return View("Error");
+        }
 
 
 		[AllowAnonymous]
@@ -86,11 +122,11 @@ namespace EmployeeManagement.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-		public async Task<IActionResult> Login(string returnUrl)
+		public async Task<IActionResult> Login(string? returnUrl)
 		{
 			LoginViewModel model = new LoginViewModel
 			{
-				ReturnUrl = returnUrl,
+				ReturnUrl = returnUrl??"~/",
 				ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
 			};
 
@@ -140,6 +176,21 @@ namespace EmployeeManagement.Controllers
                 return View("Login", loginViewModel);
             }
 
+
+
+                // Get the email claim value
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+			ApplicationUser user = null;
+
+			if (email != null)
+			{
+				user = await userManager.FindByEmailAsync(email);
+				if (user != null && !user.EmailConfirmed)
+				{
+					ModelState.AddModelError("", "Email not confirmed yet");
+					return View("Login", loginViewModel);
+				}
+			}
             // If the user already has a login (i.e if there is a record in AspNetUserLogins
             // table) then sign-in the user with this external login provider
             var signInResult = await signInManager.ExternalLoginSignInAsync(info.LoginProvider,
@@ -153,13 +204,10 @@ namespace EmployeeManagement.Controllers
             // a local account
             else
             {
-                // Get the email claim value
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
 
                 if (email != null)
                 {
                     // Create a new user without password if we do not have a user already
-                    var user = await userManager.FindByEmailAsync(email);
 
                     if (user == null)
                     {
@@ -170,6 +218,23 @@ namespace EmployeeManagement.Controllers
                         };
 
                         await userManager.CreateAsync(user);
+
+						//since this is a new user registering generate his email confirmation link
+                        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                        var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+                        logger.LogWarning(confirmationLink);
+
+                        if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                        {
+                            return RedirectToAction("ListUsers", "Administration");
+                        }
+
+                        ViewBag.ErrorTitle = "Registration Successful";
+                        ViewBag.ErrorMessage = $"Before you can login,please confirm your email by clicking the confirmation link emailed to {user.Email}";
+                        return View("Error");
+
+
                     }
 
                     // Add a login (i.e insert a row for the user in AspNetUserLogins table)
@@ -192,8 +257,16 @@ namespace EmployeeManagement.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl)
 		{
+			model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
 			if (ModelState.IsValid)
 			{
+				var user = await userManager.FindByEmailAsync(model.Email);
+				if (user!=null && !user.EmailConfirmed && (await userManager.CheckPasswordAsync(user, model.Password)))
+				{
+					ModelState.AddModelError("", "Email not confirmed for this account");
+					return View(model);
+				}
 				var result = await signInManager.PasswordSignInAsync(model.Email, model.Password,model.RememberMe,false);
 				if (result.Succeeded)
 				{
@@ -207,7 +280,7 @@ namespace EmployeeManagement.Controllers
 						return RedirectToAction("Index", "Home");
 					}
 				}
-				ModelState.AddModelError("", "Invalid Username of password");
+				ModelState.AddModelError("", "Invalid Login Attempt");
 				return View(model);
             }
 			return View(model);
@@ -219,5 +292,94 @@ namespace EmployeeManagement.Controllers
         {
             return View();
         }
+
+		[AllowAnonymous]
+		[HttpGet]
+		public IActionResult ForgotPassword()
+		{
+			return View();
+		}
+		
+		[AllowAnonymous]
+		[HttpPost]
+		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await userManager.FindByEmailAsync(model.Email);
+				if (user == null)
+				{
+					ViewBag.ErrorTitle = "Coudn't verify email address";
+					return View("Error");
+				}
+				else
+				{
+					if (user.EmailConfirmed)
+					{
+						var token = await userManager.GeneratePasswordResetTokenAsync(user);
+						var resetPasswordLink = Url.Action("ResetPassword", "Account", new { email = user.Email, token = token }, Request.Scheme);
+						logger.LogWarning(resetPasswordLink);
+						return View("ForgotPassWordConfirmationView");
+					}
+				}
+			}
+			ModelState.AddModelError("", "No email linked to your account yet");
+			return View(model);
+
+			
+        }
+
+		[AllowAnonymous]
+		[HttpGet]
+		public async Task<IActionResult> ResetPassword(string? email, string? token)
+		{
+			if(token == null || email == null)
+			{
+                ModelState.AddModelError("", "Invalid password reset token");
+            }
+            return View();
+
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Find the user by email
+                var user = await userManager.FindByEmailAsync(model.Email);
+
+                if (user != null)
+                {
+                    // reset the user password
+                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return View("ResetPasswordConfirmation");
+                    }
+                    // Display validation errors. For example, password reset token already
+                    // used to change the password or password complexity rules not met
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(model);
+                }
+
+                // To avoid account enumeration and brute force attacks, don't
+                // reveal that the user does not exist
+                return View("ResetPasswordConfirmation");
+            }
+            // Display validation errors if model state is not valid
+            return View(model);
+        }
+
+		[AllowAnonymous]
+		[HttpGet]
+		public IActionResult ResetPasswordConfirmation()
+		{
+			return View();
+		}
     }
 }
