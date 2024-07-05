@@ -291,5 +291,41 @@ namespace EmployeeManagement.Controllers
         {
             return View();
         }
+
+		[AllowAnonymous]
+		[HttpGet]
+		public IActionResult ForgotPassword()
+		{
+			return View();
+		}
+		
+		[AllowAnonymous]
+		[HttpPost]
+		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await userManager.FindByEmailAsync(model.Email);
+				if (user == null)
+				{
+					ViewBag.ErrorTitle = "Coudn't verify email address";
+					return View("Error");
+				}
+				else
+				{
+					if (user.EmailConfirmed)
+					{
+						var token = await userManager.GeneratePasswordResetTokenAsync(user);
+						var resetPasswordLink = Url.Action("ResetPassword", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+						logger.LogWarning(resetPasswordLink);
+						return View("ForgotPassWordConfirmationView");
+					}
+				}
+			}
+			ModelState.AddModelError("", "No email linked to your account yet");
+			return View(model);
+
+			
+        }
     }
 }

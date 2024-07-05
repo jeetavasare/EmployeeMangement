@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
 {
+	[AllowAnonymous]
 	public class ErrorController : Controller
 	{
 		private readonly ILogger<ErrorController> logger;
