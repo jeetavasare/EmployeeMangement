@@ -217,6 +217,23 @@ namespace EmployeeManagement.Controllers
                         };
 
                         await userManager.CreateAsync(user);
+
+						//since this is a new user registering generate his email confirmation link
+                        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                        var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+                        logger.LogWarning(confirmationLink);
+
+                        if (signInManager.IsSignedIn(User) && User.IsInRole("Administrator"))
+                        {
+                            return RedirectToAction("ListUsers", "Administration");
+                        }
+
+                        ViewBag.ErrorTitle = "Registration Successful";
+                        ViewBag.ErrorMessage = $"Before you can login,please confirm your email by clicking the confirmation link emailed to {user.Email}";
+                        return View("Error");
+
+
                     }
 
                     // Add a login (i.e insert a row for the user in AspNetUserLogins table)
