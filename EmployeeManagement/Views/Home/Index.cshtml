@@ -15,7 +15,7 @@
             <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true"/>
             <div class="card-footer text-center">
                 
-                 <a asp-controller="home" asp-action="details" asp-route-id="@employee.Id" class="btn btn-primary m-1">Show</a>
+                 <a asp-controller="home" asp-action="details" asp-route-id="@employee.EncryptedId" class="btn btn-primary m-1">Show</a>
                  @* @Html.ActionLink("View","details", "home", new {id = employee.Id}) generated entire a tag with innertext=view*@ 
                 @* <a href="@Url.Action("details", "home", new {id = employee.Id})" class="btn btn-primary">View</a> generates only string as link so cna be used in side href attrubute*@
                 <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-primary m-1">Edit</a>

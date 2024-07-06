@@ -66,6 +66,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Administration/AccessDenied";
 });
 builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
+
+builder.Services.AddSingleton<DataProtectionPurposeStrings>();
+
 builder.Services.AddDbContextPool<AppDbContext>
     (options => options.UseSqlServer(config.GetConnectionString("EmployeeDBConnection")));
 
