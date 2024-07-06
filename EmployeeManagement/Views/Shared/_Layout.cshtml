@@ -46,6 +46,11 @@
                     <li class="nav-item">
                         <a asp-controller="Home" asp-action="Create" class="nav-link">Create</a>
                     </li>
+                    @if (signInManger.IsSignedIn(User))
+                    {
+                        <a asp-controller="Account" asp-action="ChangePassword" class="nav-link">Change Password</a>
+                        
+                    }
                     @if (signInManger.IsSignedIn(User) && User.IsInRole("Administrator"))
                     {
                         <li class="nav-item dropdown">
