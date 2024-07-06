@@ -78,8 +78,16 @@ builder.Services.AddDbContextPool<AppDbContext>
 // or give the options in AddIdentity function itself
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.Password.RequiredLength = 3;
     options.Password.RequireUppercase = false; options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredUniqueChars = 0; options.Password.RequireDigit = false;options.Password.RequireLowercase = false; })
-    .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+    options.Password.RequiredUniqueChars = 0; options.Password.RequireDigit = false;options.Password.RequireLowercase = false;
+    options.Tokens.EmailConfirmationTokenProvider = "EmailConfirmationToken";
+
+})
+    .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders()
+    .AddTokenProvider<CustomEmailConfirmationTokenProvider<ApplicationUser>>("EmailConfirmationToken");
+
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(5));
+builder.Services.Configure<CustomEmailConfirmationTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(3));
 
 var app = builder.Build();
 
