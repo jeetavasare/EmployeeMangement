@@ -1,8 +1,11 @@
 ﻿using EmployeeManagement.Models;
+using EmployeeManagement.Security;
 using EmployeeManagement.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Cryptography;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EmployeeManagement.Controllers
@@ -12,11 +15,13 @@ namespace EmployeeManagement.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IWebHostEnvironment _webhostenvironment;
-
-        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment webHostEnvironment)
+        private readonly IDataProtector _dataProtector;
+        public HomeController(IEmployeeRepository employeeRepository, IWebHostEnvironment webHostEnvironment,
+            IDataProtectionProvider dataProtectionProvider, DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
             _employeeRepository = employeeRepository;
             _webhostenvironment = webHostEnvironment;
+            _dataProtector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
 
@@ -26,7 +31,12 @@ namespace EmployeeManagement.Controllers
         [AllowAnonymous]
 		public ViewResult Index()
         {
-            return View(_employeeRepository.GetAllEmployees());
+            var model = _employeeRepository.GetAllEmployees().Select(e =>
+            {
+                e.EncryptedId = _dataProtector.Protect(e.Id.ToString());
+                return e;
+            });
+            return View(model);
             //return _employeeRepository.GetEmployee(1).Name;
             //return Json(new { id = 1, name = "Jeet" });
             //return "From Controller:Home->Index()";
@@ -34,13 +44,22 @@ namespace EmployeeManagement.Controllers
 
         [AllowAnonymous]
         [Route("[action]/{id?}")]
-        public ViewResult Details(int? id)
+        public ViewResult Details(string? id)
         {
-            Employee model = _employeeRepository.GetEmployee(id??1);
+            int decryptedId;
+            try
+            {
+                decryptedId = Convert.ToInt32(_dataProtector.Unprotect(id));
+            }
+            catch(CryptographicException)
+            {
+                return View("NotFound");
+            }
+            Employee model = _employeeRepository.GetEmployee(decryptedId);
             if (model == null)
             {
                 Response.StatusCode = 404;
-                return View("EmployeeNotFound",id.Value);
+                return View("EmployeeNotFound",decryptedId);
             }
             //ViewData["Employee"] = result;
             //ViewData["PageTitle"] = "Employee Details";
