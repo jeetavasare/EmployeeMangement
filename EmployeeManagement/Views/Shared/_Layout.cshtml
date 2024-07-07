@@ -51,6 +51,14 @@
                         <a asp-controller="Account" asp-action="ChangePassword" class="nav-link">Change Password</a>
                         
                     }
+                    @{
+                        var user = await userManager.GetUserAsync(User);
+                    }
+                    @if (signInManger.IsSignedIn(User) && !await userManager.HasPasswordAsync(user))
+                    {
+                        <a asp-controller="Account" asp-action="ChangePassword" class="nav-link">Set Password</a>
+                        
+                    }
                     @if (signInManger.IsSignedIn(User) && User.IsInRole("Administrator"))
                     {
                         <li class="nav-item dropdown">
