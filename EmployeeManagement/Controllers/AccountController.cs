@@ -392,7 +392,7 @@ namespace EmployeeManagement.Controllers
 			}
 			if(!await userManager.HasPasswordAsync(user))
 			{
-				return View("SetPassword");
+				return RedirectToAction("SetPassword");
 			}
 			return View();
 		}
