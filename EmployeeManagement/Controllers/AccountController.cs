@@ -383,8 +383,17 @@ namespace EmployeeManagement.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult ChangePassword()
+		public async Task<IActionResult> ChangePassword()
 		{
+			var user = await userManager.GetUserAsync(User);
+			if(user == null)
+			{
+				return View("Login");
+			}
+			if(!await userManager.HasPasswordAsync(user))
+			{
+				return View("SetPassword");
+			}
 			return View();
 		}
 
@@ -409,6 +418,44 @@ namespace EmployeeManagement.Controllers
 				}
 				await signInManager.RefreshSignInAsync(user);
 				return View("ChangePasswordConfirmation");
+			}
+			return View(model);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> SetPassword()
+		{
+			var user = await userManager.GetUserAsync(User);
+			if (user == null) {
+				return View("Login");
+			}
+
+			if (await userManager.HasPasswordAsync(user))
+			{
+				ViewBag.ErrorTitle = "Cannot set Password for this account";
+				ViewBag.ErrorMessage = "Password was already set for this account you can change or reset your password";
+				return View("Error");
+			}
+			return View();
+		}
+
+		[HttpPost]
+        public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await userManager.GetUserAsync(User);
+				var result = await userManager.AddPasswordAsync(user, model.Password);
+				if (!result.Succeeded) {
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError("", error.Description);
+						return View(model);
+					}
+				}
+                await signInManager.RefreshSignInAsync(user);
+                return View("SetPasswordConfirmation");
+
 			}
 			return View(model);
 		}
