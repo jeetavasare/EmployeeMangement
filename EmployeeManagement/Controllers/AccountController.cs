@@ -267,7 +267,7 @@ namespace EmployeeManagement.Controllers
 					ModelState.AddModelError("", "Email not confirmed for this account");
 					return View(model);
 				}
-				var result = await signInManager.PasswordSignInAsync(model.Email, model.Password,model.RememberMe,false);
+				var result = await signInManager.PasswordSignInAsync(model.Email, model.Password,model.RememberMe,true);
 				if (result.Succeeded)
 				{
 					if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
@@ -279,6 +279,10 @@ namespace EmployeeManagement.Controllers
 					{
 						return RedirectToAction("Index", "Home");
 					}
+				}
+				if (result.IsLockedOut)
+				{
+					return View("AccountLocked");
 				}
 				ModelState.AddModelError("", "Invalid Login Attempt");
 				return View(model);
