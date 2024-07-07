@@ -359,6 +359,10 @@ namespace EmployeeManagement.Controllers
                     // reset the user password
                     var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
                     if (result.Succeeded)
+						if(await userManager.IsLockedOutAsync(user))
+						{
+							await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
+						}
                     {
                         return View("ResetPasswordConfirmation");
                     }
