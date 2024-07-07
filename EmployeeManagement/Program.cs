@@ -83,6 +83,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options
     options.Password.RequireUppercase = false; options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredUniqueChars = 0; options.Password.RequireDigit = false;options.Password.RequireLowercase = false;
     options.Tokens.EmailConfirmationTokenProvider = "EmailConfirmationToken";
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(24);
 
 })
     .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders()
