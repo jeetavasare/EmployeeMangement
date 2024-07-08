@@ -5,11 +5,8 @@ After cloning the repo run the project using Visual Studio(with .net Framework 8
 ```
 Update-Database
 ```
-In the package manager console  
-
-And then run
+In the package manager console and then run
 ```
 dotnet run
 ```  
 Inside the project folder to start the application
-

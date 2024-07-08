@@ -2,27 +2,29 @@ using EmployeeManagement.Models;
 using EmployeeManagement.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Web;
-using NLog.Web.LayoutRenderers;
-using System.Linq.Expressions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+
+
 builder.Configuration.AddJsonFile("secrets.json");
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 //logger.Warn("init warn");
 
+
+
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 builder.Host.UseNLog();
+
+
 
 builder.Services.AddMvc(options =>
 {
@@ -30,12 +32,15 @@ builder.Services.AddMvc(options =>
     options.Filters.Add(new AuthorizeFilter(policy));
 });
 
+
 builder.Services.AddAuthentication().AddGoogle(options =>
     {
         options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
         
     });
+
+
 //builder.Services.AddAuthorization(options
 //    =>
 //    {
@@ -65,6 +70,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Administration/AccessDenied";
 });
+
+
 builder.Services.AddScoped<IEmployeeRepository,SQLEmployeeRepository>();
 
 builder.Services.AddSingleton<DataProtectionPurposeStrings>();
@@ -79,6 +86,8 @@ builder.Services.AddDbContextPool<AppDbContext>
 //    => { options.Password.RequiredLength = 7; options.Password.RequireUppercase = false;options.SignIn.RequireConfirmedEmail = true;}
 //    );
 // or give the options in AddIdentity function itself
+
+
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.Password.RequiredLength = 3;
     options.Password.RequireUppercase = false; options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredUniqueChars = 0; options.Password.RequireDigit = false;options.Password.RequireLowercase = false;
@@ -93,6 +102,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(5));
 builder.Services.Configure<CustomEmailConfirmationTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(3));
+
+
 
 var app = builder.Build();
 
@@ -155,10 +166,14 @@ app.UseEndpoints(endpoints =>
 //});
 
 //use attribute routing only, overrides default controller route
+
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers(); // This will map attribute-routed controllers
 });
+
+
 //app.UseFileServer();
 
 //app.MapGet("/", () => "Hello World!");
